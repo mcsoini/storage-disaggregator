@@ -5,17 +5,50 @@ A module to disaggregate energy storage operation by time scales.
 The disaggregation only requires the charging and discharging power profiles and is agnostic with respect to electricity prices or other drivers.
 
 
+## Installation
+https://stackoverflow.com/questions/19042389/conda-installing-upgrading-directly-from-github
+
+
+## Example
+
 
 ```python
-import sys
+import sys, os
 import matplotlib.pyplot as plt
 import pandas as pd
+
+
+sys.path.append(os.path.abspath('../../'))
+
+print(sys.path)
 
 import storedisagg as std
 
 %matplotlib inline
 
+
+
 ```
+
+    ['', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg/example', '/mnt/data/Dropbox/STORAGE_REST/PYTHON/LP_MODEL', '/home/user/.anaconda3/lib/python36.zip', '/home/user/.anaconda3/lib/python3.6', '/home/user/.anaconda3/lib/python3.6/lib-dynload', '/home/user/.anaconda3/lib/python3.6/site-packages', '/home/user/.anaconda3/lib/python3.6/site-packages/IPython/extensions', '/home/user/.ipython', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS']
+
+
+
+```python
+std.get_example_data_100()
+```
+
+
+    ---------------------------------------------------------------------------
+
+    AttributeError                            Traceback (most recent call last)
+
+    <ipython-input-9-e919ab564bf6> in <module>()
+    ----> 1 std.get_example_data_100()
+    
+
+    AttributeError: module 'storedisagg' has no attribute 'get_example_data_100'
+
 
 ## Retrieve example data
 Example data with 100 time slots is generated in the storedisagg.example.example_data module.
@@ -36,19 +69,20 @@ dfplot[['Stored energy']].plot.area(ax=ax[1])
 for iax, ylab in enumerate(['Power', 'Energy']): ax[iax].set_ylabel(ylab)
 ```
 
-             echg  edch   mc  Discharging  Charging
-    sy                                             
-    0.0  0.000000  -0.0  0.0          0.0  0.000000
-    1.0  0.123760  -0.0  0.0          0.0  0.123760
-    2.0  0.227968  -0.0  0.0          0.0  0.227968
-    3.0  0.352666  -0.0  0.0          0.0  0.352666
-    4.0  0.458185  -0.0  0.0          0.0  0.458185
-    5.0  0.499873  -0.0  0.0          0.0  0.499873
-    6.0  0.457757  -0.0  0.0          0.0  0.457757
+
+    ---------------------------------------------------------------------------
+
+    AttributeError                            Traceback (most recent call last)
+
+    <ipython-input-4-5d5051e1b3c5> in <module>()
+    ----> 1 df = std.get_example_data_100()
+          2 
+          3 fig, ax = plt.subplots(1, 2)
+          4 
+          5 dfplot = df.set_index('sy').assign(Discharging=-df['edch'], Charging=df['echg'])
 
 
-
-![png](docs/resources/output_3_1.png)
+    AttributeError: module 'storedisagg' has no attribute 'get_example_data_100'
 
 
 ## Run disaggregation for all component profile assignment kinds
@@ -70,7 +104,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
 
 ```
 
-    100%|██████████| 6/6 [00:00<00:00, 51.05it/s]
+    100%|██████████| 6/6 [00:00<00:00, 46.28it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
@@ -80,7 +114,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
 
 
     
-    100%|██████████| 6/6 [00:00<00:00, 33.17it/s]
+    100%|██████████| 6/6 [00:00<00:00, 32.73it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
@@ -90,45 +124,51 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
 
 
     
-    100%|██████████| 6/6 [00:00<00:00, 32.12it/s]
+     67%|██████▋   | 4/6 [00:00<00:00, 34.86it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
-    Net value input: 0.0
-    Net value disagg: 0.0
 
 
-    
-    100%|██████████| 6/6 [00:00<00:00, 45.25it/s]
+    100%|██████████| 6/6 [00:00<00:00, 30.26it/s]
 
-    Difference net value: 0.0
-    Difference idch (events - total): 0.0
-    Difference ichg (events - total): 1.7763568394e-15
+
     Net value input: 0.0
     Net value disagg: 0.0
     Difference net value: 0.0
 
 
-    
-    100%|██████████| 6/6 [00:00<00:00, 33.13it/s]
+     50%|█████     | 3/6 [00:00<00:00, 24.59it/s]
+
+    Difference idch (events - total): 0.0
+    Difference ichg (events - total): 1.7763568394e-15
+
+
+    100%|██████████| 6/6 [00:00<00:00, 16.13it/s]
+
+
+    Net value input: 0.0
+    Net value disagg: 0.0
+    Difference net value: 0.0
+
+
+    100%|██████████| 6/6 [00:00<00:00, 36.55it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
     Net value input: 0.0
     Net value disagg: 0.0
-
-    
-
-
-    
     Difference net value: 0.0
+
+
+    
 
 
 ## Result dataframes
 
 The result tables are:
 
-### df_full_all
+### df_full_all (std.StDisaggregator.df_full)
 containing the profiles of the components (nevent). It is indexed by nevents (=components) and time slot. Each nevent corresponds to a well-defined iteration.
 
 * **echg/edch** are external charging and discharging, i.e. including losses; note that these are the original profiles, copied to each iteration
@@ -363,7 +403,7 @@ df_full_all.set_index(['kind', 'iteration', 'nevent', 'slot']).head(10)
 
 
 
-### df_step_evts_all
+### df_step_evts_all (std.StDisaggregator.df_step_evts)
 containing the aggregate properties of the components. This is indexed by the components (nevent). This table is generated for convenience. All properties can be generated from the df_full_all table.
 
 Main columns:
@@ -708,7 +748,7 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](docs/resources/output_11_0.png)
+![png](docs/resources/README_14_0.png)
 
 
 ### Plots by iteration for all profile assignments.
@@ -731,5 +771,5 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](docs/resources/output_13_0.png)
+![png](docs/resources/README_16_0.png)
 
