@@ -708,7 +708,7 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](output_11_0.png)
+![png](docs/resources/output_11_0.png)
 
 
 ### Plots by iteration for all profile assignments.
