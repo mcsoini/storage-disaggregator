@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from importlib import reload
 
-import storedisagg as std
+import storedisagg.storedisagg as std
 
 
 reload(std)
