@@ -48,7 +48,7 @@ for iax, ylab in enumerate(['Power', 'Energy']): ax[iax].set_ylabel(ylab)
 
 
 
-![png](output_3_1.png)
+![png](docs/resources/output_3_1.png)
 
 
 ## Run disaggregation for all component profile assignment kinds
@@ -731,5 +731,5 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](output_13_0.png)
+![png](docs/resources/output_13_0.png)
 
