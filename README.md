@@ -4,6 +4,11 @@
 A module to disaggregate energy storage operation by time scales.
 The disaggregation only requires the charging and discharging power profiles and is agnostic with respect to electricity prices or other drivers.
 
+
+## Installation
+https://stackoverflow.com/questions/19042389/conda-installing-upgrading-directly-from-github
+
+
 ## Example
 
 
@@ -40,7 +45,7 @@ std.get_example_data_100()
 
     <ipython-input-9-e919ab564bf6> in <module>()
     ----> 1 std.get_example_data_100()
-
+    
 
     AttributeError: module 'storedisagg' has no attribute 'get_example_data_100'
 
@@ -71,9 +76,9 @@ for iax, ylab in enumerate(['Power', 'Energy']): ax[iax].set_ylabel(ylab)
 
     <ipython-input-4-5d5051e1b3c5> in <module>()
     ----> 1 df = std.get_example_data_100()
-          2
+          2 
           3 fig, ax = plt.subplots(1, 2)
-          4
+          4 
           5 dfplot = df.set_index('sy').assign(Discharging=-df['edch'], Charging=df['echg'])
 
 
@@ -108,7 +113,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
     Difference net value: 0.0
 
 
-
+    
     100%|██████████| 6/6 [00:00<00:00, 32.73it/s]
 
     Difference idch (events - total): 0.0
@@ -118,7 +123,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
     Difference net value: 0.0
 
 
-
+    
      67%|██████▋   | 4/6 [00:00<00:00, 34.86it/s]
 
     Difference idch (events - total): 0.0
@@ -156,7 +161,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
     Difference net value: 0.0
 
 
-
+    
 
 
 ## Result dataframes
@@ -767,3 +772,4 @@ for ax_x, cols, ylabel in map_ax:
 
 
 ![png](docs/resources/README_16_0.png)
+
