@@ -6,7 +6,11 @@ The disaggregation only requires the charging and discharging power profiles and
 
 
 ## Installation
-https://stackoverflow.com/questions/19042389/conda-installing-upgrading-directly-from-github
+
+```bash
+export PYTHONPATH=$PYTHONPATH:/path/to/dir/containing/storedisagg/
+```
+
 
 
 ## Example
@@ -17,11 +21,6 @@ import sys, os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
-sys.path.append(os.path.abspath('../../'))
-
-print(sys.path)
-
 import storedisagg as std
 
 %matplotlib inline
@@ -30,24 +29,471 @@ import storedisagg as std
 
 ```
 
-    ['', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg/example', '/mnt/data/Dropbox/STORAGE_REST/PYTHON/LP_MODEL', '/home/user/.anaconda3/lib/python36.zip', '/home/user/.anaconda3/lib/python3.6', '/home/user/.anaconda3/lib/python3.6/lib-dynload', '/home/user/.anaconda3/lib/python3.6/site-packages', '/home/user/.anaconda3/lib/python3.6/site-packages/IPython/extensions', '/home/user/.ipython', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS', '/mnt/data/Dropbox/SHARED_REPOS/storedisagg', '/mnt/data/Dropbox/SHARED_REPOS']
-
-
 
 ```python
 std.get_example_data_100()
 ```
 
 
-    ---------------------------------------------------------------------------
 
-    AttributeError                            Traceback (most recent call last)
 
-    <ipython-input-9-e919ab564bf6> in <module>()
-    ----> 1 std.get_example_data_100()
-    
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-    AttributeError: module 'storedisagg' has no attribute 'get_example_data_100'
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sy</th>
+      <th>echg</th>
+      <th>edch</th>
+      <th>mc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>0.123760</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>0.227968</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3.0</td>
+      <td>0.352666</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4.0</td>
+      <td>0.458185</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5.0</td>
+      <td>0.499873</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6.0</td>
+      <td>0.457757</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7.0</td>
+      <td>0.351194</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>8.0</td>
+      <td>0.223709</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9.0</td>
+      <td>0.112805</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>11.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>13.0</td>
+      <td>0.000000</td>
+      <td>0.148601</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>14.0</td>
+      <td>0.000000</td>
+      <td>0.212805</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>15.0</td>
+      <td>0.000000</td>
+      <td>0.262206</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>16.0</td>
+      <td>0.000000</td>
+      <td>0.271913</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>17.0</td>
+      <td>0.000000</td>
+      <td>0.219548</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>18.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>19.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>20.0</td>
+      <td>0.282191</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>21.0</td>
+      <td>0.457346</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>22.0</td>
+      <td>0.561705</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>23.0</td>
+      <td>0.563815</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>24.0</td>
+      <td>0.455124</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>25.0</td>
+      <td>0.252772</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>26.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>27.0</td>
+      <td>0.000000</td>
+      <td>0.265486</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>28.0</td>
+      <td>0.000000</td>
+      <td>0.481502</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>29.0</td>
+      <td>0.000000</td>
+      <td>0.617505</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>70.0</td>
+      <td>0.107125</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>71.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>72.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>73.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>74.0</td>
+      <td>0.107125</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>75.0</td>
+      <td>0.800000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>76.0</td>
+      <td>0.107125</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>77.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>78.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>79.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>80.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>81.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>82.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>83.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>84.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>85.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>86.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>87.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>88.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>89.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>90.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>91.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>92.0</td>
+      <td>0.000000</td>
+      <td>0.107125</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>93.0</td>
+      <td>0.000000</td>
+      <td>0.327341</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>94.0</td>
+      <td>0.000000</td>
+      <td>0.639835</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>95.0</td>
+      <td>0.000000</td>
+      <td>0.800000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>96.0</td>
+      <td>0.000000</td>
+      <td>0.639835</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>97.0</td>
+      <td>0.000000</td>
+      <td>0.327341</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>98.0</td>
+      <td>0.000000</td>
+      <td>0.154898</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>99.0</td>
+      <td>0.000000</td>
+      <td>-0.000000</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 4 columns</p>
+</div>
+
 
 
 ## Retrieve example data
@@ -69,20 +515,19 @@ dfplot[['Stored energy']].plot.area(ax=ax[1])
 for iax, ylab in enumerate(['Power', 'Energy']): ax[iax].set_ylabel(ylab)
 ```
 
-
-    ---------------------------------------------------------------------------
-
-    AttributeError                            Traceback (most recent call last)
-
-    <ipython-input-4-5d5051e1b3c5> in <module>()
-    ----> 1 df = std.get_example_data_100()
-          2 
-          3 fig, ax = plt.subplots(1, 2)
-          4 
-          5 dfplot = df.set_index('sy').assign(Discharging=-df['edch'], Charging=df['echg'])
+             echg  edch   mc  Discharging  Charging
+    sy                                             
+    0.0  0.000000  -0.0  0.0          0.0  0.000000
+    1.0  0.123760  -0.0  0.0          0.0  0.123760
+    2.0  0.227968  -0.0  0.0          0.0  0.227968
+    3.0  0.352666  -0.0  0.0          0.0  0.352666
+    4.0  0.458185  -0.0  0.0          0.0  0.458185
+    5.0  0.499873  -0.0  0.0          0.0  0.499873
+    6.0  0.457757  -0.0  0.0          0.0  0.457757
 
 
-    AttributeError: module 'storedisagg' has no attribute 'get_example_data_100'
+
+![png](docs/resources/README_6_1.png)
 
 
 ## Run disaggregation for all component profile assignment kinds
@@ -104,7 +549,7 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
 
 ```
 
-    100%|██████████| 6/6 [00:00<00:00, 46.28it/s]
+    100%|██████████| 6/6 [00:00<00:00, 54.77it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
@@ -114,48 +559,44 @@ for kind in ['share', 'leftright', 'rightleft', 'top', 'bottom']:
 
 
     
-    100%|██████████| 6/6 [00:00<00:00, 32.73it/s]
-
-    Difference idch (events - total): 0.0
-    Difference ichg (events - total): 1.7763568394e-15
-    Net value input: 0.0
-    Net value disagg: 0.0
-    Difference net value: 0.0
-
-
-    
-     67%|██████▋   | 4/6 [00:00<00:00, 34.86it/s]
+     67%|██████▋   | 4/6 [00:00<00:00, 35.18it/s]
 
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
 
 
-    100%|██████████| 6/6 [00:00<00:00, 30.26it/s]
-
+    100%|██████████| 6/6 [00:00<00:00, 30.10it/s]
+      0%|          | 0/6 [00:00<?, ?it/s]
 
     Net value input: 0.0
     Net value disagg: 0.0
     Difference net value: 0.0
-
-
-     50%|█████     | 3/6 [00:00<00:00, 24.59it/s]
-
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
 
 
-    100%|██████████| 6/6 [00:00<00:00, 16.13it/s]
-
+    100%|██████████| 6/6 [00:00<00:00, 33.33it/s]
+      0%|          | 0/6 [00:00<?, ?it/s]
 
     Net value input: 0.0
     Net value disagg: 0.0
     Difference net value: 0.0
-
-
-    100%|██████████| 6/6 [00:00<00:00, 36.55it/s]
-
     Difference idch (events - total): 0.0
     Difference ichg (events - total): 1.7763568394e-15
+
+
+    100%|██████████| 6/6 [00:00<00:00, 45.00it/s]
+      0%|          | 0/6 [00:00<?, ?it/s]
+
+    Net value input: 0.0
+    Net value disagg: 0.0
+    Difference net value: 0.0
+    Difference idch (events - total): 0.0
+    Difference ichg (events - total): 1.7763568394e-15
+
+
+    100%|██████████| 6/6 [00:00<00:00, 40.04it/s]
+
     Net value input: 0.0
     Net value disagg: 0.0
     Difference net value: 0.0
