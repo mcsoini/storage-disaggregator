@@ -11,6 +11,8 @@ The disaggregation only requires the charging and discharging power profiles and
 export PYTHONPATH=$PYTHONPATH:/path/to/dir/containing/storedisagg/
 ```
 
+*Note: README.md created from std_example.ipynb in pre-commit hook*
+
 ## Example
 
 
