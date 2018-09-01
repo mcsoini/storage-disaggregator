@@ -5,13 +5,13 @@ Created on Fri Jan 26 17:31:59 2018
 
 @author: user
 """
-
+import sys
 import pandas as pd
 import numpy as np
 from importlib import reload
 
-import storedisagg.storedisagg as std
 
+import storedisagg as std
 
 reload(std)
 
