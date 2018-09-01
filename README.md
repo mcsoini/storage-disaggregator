@@ -11,8 +11,6 @@ The disaggregation only requires the charging and discharging power profiles and
 export PYTHONPATH=$PYTHONPATH:/path/to/dir/containing/storedisagg/
 ```
 
-
-
 ## Example
 
 
@@ -527,7 +525,7 @@ for iax, ylab in enumerate(['Power', 'Energy']): ax[iax].set_ylabel(ylab)
 
 
 
-![png](docs/resources/README_6_1.png)
+![png](output_6_1.png)
 
 
 ## Run disaggregation for all component profile assignment kinds
@@ -1189,7 +1187,7 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](docs/resources/README_14_0.png)
+![png](output_14_0.png)
 
 
 ### Plots by iteration for all profile assignments.
@@ -1212,5 +1210,5 @@ for ax_x, cols, ylabel in map_ax:
 ```
 
 
-![png](docs/resources/README_16_0.png)
+![png](output_16_0.png)
 
