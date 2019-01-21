@@ -6,7 +6,7 @@ The disaggregation only requires the charging and discharging power profiles and
 
 # Example
 
-Please consult ./example/std_example.ipynb
+Please consult the [example notbook](example/std_example.ipynb)
 
 
 
