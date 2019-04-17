@@ -45,6 +45,19 @@ class StDisaggregator():
         self.shift_profiles()
         self.set_small_to_zero()
 
+
+        #
+
+        erg = self.df.erg.values
+#        erg[erg < 2e-4] = 0
+        erg = np.diff(np.concatenate([np.array([erg[-1]]), erg]))
+        self.df['ichg_fix'] = self.df['idch_fix'] = erg
+        self.df['ichg'] = self.df.ichg_fix.where(self.df.ichg_fix > 0, 0)
+        self.df['idch'] = - self.df.idch_fix.where(self.df.idch_fix < 0, 0)
+#
+
+
+
         self.init_result_dfs()
 
         # calculate aggregate iterations
