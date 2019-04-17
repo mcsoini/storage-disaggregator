@@ -305,7 +305,8 @@ class StDisaggregator():
         Input dataframe columns: ['slot', 'ichg', 'idch']
         '''
 
-        assert all(c in df.columns for c in ['slot', 'ichg', 'idch']), \
+        assert all(c in df.columns for c in ['slot', 'slot_min', 'slot_max',
+                                             'ichg', 'idch']), \
                 'aggregate_events: Incomplete input dataframe'
 
 
