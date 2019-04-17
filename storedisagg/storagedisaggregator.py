@@ -348,8 +348,6 @@ class StDisaggregator():
                         .reset_index() for icd in ['ichg', 'idch']]
         list_df_cd[1] = list_df_cd[1]['idch']
 
-#        print(list_df_cd)
-
         df_evts = pd.concat(list_df_cd, axis=1)
         df_evts = df_evts.drop('index', axis=1)
 
