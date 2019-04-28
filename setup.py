@@ -11,7 +11,7 @@ setuptools.setup(
     description="Ex-post energy storage operation disaggregation by time scales.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/mcsoini/storedisagg,
+    url="https://github.com/mcsoini/storedisagg",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
