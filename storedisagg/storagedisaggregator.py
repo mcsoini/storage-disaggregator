@@ -11,7 +11,7 @@ the full disaggregation of the storage operation.
 import pandas as pd
 import numpy as np
 
-from storedisagg.storedisagg.compcalc import ComponentCalculator
+from storedisagg import ComponentCalculator
 
 try:
     from tqdm import tqdm
