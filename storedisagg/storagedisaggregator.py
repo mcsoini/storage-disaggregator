@@ -7,7 +7,7 @@ tvdisaggregator.py
 Contains the class TVDisaggregator which is responsible for performing
 the full disaggregation of the storage operation.
 """
-
+import sys
 import pandas as pd
 import numpy as np
 
@@ -179,6 +179,8 @@ class StDisaggregator():
         print('Net value disagg: {}'.format(tot_net_value_disagg))
         print('Difference net value: {}'.format(tot_net_value_input
                                                 - tot_net_value_disagg))
+        sys.stdout.flush()
+
 
     def loop_get_hourly_components(self):
 
@@ -285,6 +287,8 @@ class StDisaggregator():
         print('Difference ichg (events - total):',
               (self.df_step_evts['comp_ichg'].sum()
                - self.df_full['ichg'].sum()))
+        sys.stdout.flush()
+
 
         self.df_full['ichg_all'] = self.df_full.ichg
         self.df_full['idch_all'] = self.df_full.idch
