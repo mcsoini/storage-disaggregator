@@ -554,22 +554,11 @@ class StDisaggregator():
         df['nevent'] += offset
 
         # get total energy as well as min/max slot -> rows of df_step_evts
-        def calc_events(dfevts, dr):
-            dfevts = dfevts.reset_index()
-            return dfevts.pivot_table(index=['nevent'],
-                                      values=[dr, 'slot_min', 'slot_max'],
-                                      aggfunc={dr: sum,
-                                               'slot_min': min,
-                                               'slot_max': max}).reset_index()
-
-        list_df_cd = [df.groupby('nevent')
-                        .apply(lambda x: calc_events(x, icd))
-                        .reset_index(level=0, drop=True)
-                        .reset_index() for icd in ['ichg', 'idch']]
-        list_df_cd[1] = list_df_cd[1]['idch']
-
-        df_evts = pd.concat(list_df_cd, axis=1)
-        df_evts = df_evts.drop('index', axis=1)
+        df_evts = df.pivot_table(index=['nevent'],
+                                 values=['ichg', 'idch', 'slot_min', 'slot_max'],
+                                 aggfunc={'idch': 'sum', 'ichg': 'sum',
+                                          'slot_min': 'min',
+                                          'slot_max': 'max'}).reset_index()
 
         # calculate component energy from minima
         df_evts['min'] = df_evts[['ichg', 'idch']].min(axis=1)
