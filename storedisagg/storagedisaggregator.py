@@ -241,7 +241,6 @@ class StDisaggregator():
 
 
         dfg = self.df_full_stacked.groupby('nevent')
-        df = dfg.get_group(462)
 
         self.df_step_evts['wgt_center_erg_ichg'] = dfg.apply(get_wgt_center, 'ichg')
         self.df_step_evts['wgt_center_erg_idch'] = dfg.apply(get_wgt_center, 'idch')
