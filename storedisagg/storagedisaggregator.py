@@ -58,14 +58,26 @@ class StDisaggregator():
         # calculate aggregate iterations
         self.iterate_event_aggregation()
 
-        # get hourly components by looping over event rows
-        self.loop_get_hourly_components()
 
-        # calculate final results consisting in time differences and
-        # component values
-        self.calc_final_results()
+        if True:
 
-        self.generate_stacked_tables()
+            # get hourly components by looping over event rows
+            self.loop_get_hourly_components_dask()
+
+            self.generate_stacked_tables_dask()
+
+            # calculate final results consisting in time differences and
+            # component values
+            self.calc_final_results_dask()
+    #
+        else:
+            # get hourly components by looping over event rows
+            self.loop_get_hourly_components()
+                # calculate final results consisting in time differences and
+            # component values
+            self.calc_final_results()
+
+            self.generate_stacked_tables()
 
     def calc_internal_power(self):
 
