@@ -46,17 +46,12 @@ class StDisaggregator():
         self.set_small_to_zero()
 
 
-        #
-
         erg = self.df.erg.values
 #        erg[erg < 2e-4] = 0
         erg = np.diff(np.concatenate([np.array([erg[-1]]), erg]))
         self.df['ichg_fix'] = self.df['idch_fix'] = erg
         self.df['ichg'] = self.df.ichg_fix.where(self.df.ichg_fix > 0, 0)
         self.df['idch'] = - self.df.idch_fix.where(self.df.idch_fix < 0, 0)
-#
-
-
 
         self.init_result_dfs()
 
@@ -310,8 +305,7 @@ class StDisaggregator():
                 comp_col = dr + '_' + str(int(iiter))
 
                 # get new component
-                self.compcal = ComponentCalculator(y, val_tgt,
-                                                            self.kind, dr)
+                self.compcal = ComponentCalculator(y, val_tgt, self.kind, dr)
 
                 df_slct.loc[:, comp_col] = self.compcal.ycomp
 
