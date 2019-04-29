@@ -132,6 +132,29 @@ class StDisaggregator():
         self.df_step_evts['iteration'] = 0
 
 
+    def generate_stacked_tables_dask(self):
+
+
+        self.df_full_stacked = self.df_full.rename(columns={'ichg': 'ichg_res',
+                                                            'idch': 'idch_res'})
+        # stack df_full table
+        ind_list = [c for c in self.df_full_stacked.columns
+                    if not any(['_' + str(ii) in c for ii in range(100)])]
+        self.df_full_stacked = self.df_full_stacked.set_index(ind_list)
+        cols_new = [(int(c.split('_')[1]), c.split('_')[0])
+                    for c in self.df_full_stacked.columns]
+
+        self.df_full_stacked.columns = pd.MultiIndex.from_tuples(cols_new)
+        self.df_full_stacked = self.df_full_stacked.stack(level=0)
+        self.df_full_stacked = self.df_full_stacked.reset_index()
+
+        self.df_full_stacked = self.df_full_stacked.rename(columns={[c for c in
+                                                     self.df_full_stacked.columns
+                                                     if 'level_' in c][0]:
+                                                    'iteration'})
+        self.df_full_stacked['kind'] = self.kind
+        self.df_step_evts['kind'] = self.kind
+
 
     def generate_stacked_tables(self):
 
