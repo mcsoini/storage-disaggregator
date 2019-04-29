@@ -182,6 +182,74 @@ class StDisaggregator():
         sys.stdout.flush()
 
 
+
+    def calc_final_results_dask(self):
+
+
+        def get_wgt_center(df, dr):
+            '''
+            Calculate power weighted center slot.
+
+            Parameters
+            ----------
+            df - pd.DataFrame
+                Power time dataframe with columns ['slot', dr]
+            dr - str
+                One of {'ichg', 'idch'}
+            '''
+
+            return (df[dr] * df.slot).sum() / df[dr].sum()
+
+
+        def get_comp_val(df, dr):
+            '''
+            Calculate value of components.
+            '''
+
+            return (df.mc * df[dr]).sum()
+
+
+        dfg = self.df_full_stacked.groupby('nevent')
+        df = dfg.get_group(462)
+
+        self.df_step_evts['wgt_center_erg_ichg'] = dfg.apply(get_wgt_center, 'ichg')
+        self.df_step_evts['wgt_center_erg_idch'] = dfg.apply(get_wgt_center, 'idch')
+
+        self.df_step_evts['val_comp_ichg'] = dfg.apply(get_comp_val, 'ichg')
+        self.df_step_evts['val_comp_idch'] = dfg.apply(get_comp_val, 'idch')
+
+        # if the weighted slots are outside [slot_min, slot_max], something
+        # is terribly wrong; using tolerance of +- 1e-9 to avoid false positives
+        # in case of float accuracy issues for single-time slot components
+        mask_outside = \
+        ((self.df_step_evts.wgt_center_erg_ichg < self.df_step_evts.slot_min - 1 - 1e-9) |
+         (self.df_step_evts.wgt_center_erg_ichg > self.df_step_evts.slot_max + 1 + 1e-9))
+        assert mask_outside.sum() == 0, 'Weighted center outside slot_min/max'
+
+        self.df_step_evts['time_diff_icd'] = (
+                self.df_step_evts.wgt_center_erg_idch
+                - self.df_step_evts.wgt_center_erg_ichg)
+        self.df_step_evts['ival_comp_net'] = (
+                self.df_step_evts.val_comp_idch
+                - self.df_step_evts.val_comp_ichg)
+        self.df_step_evts['eval_comp_net'] = (
+                self.df_step_evts.val_comp_idch * np.sqrt(self.eff)
+                - 1/np.sqrt(self.eff) * self.df_step_evts['val_comp_ichg'])
+
+        self.df_step_evts['eff'] = self.eff
+
+        tot_net_value_input = self.df_step_evts.eval_comp_net.sum()
+        tot_net_value_disagg = ((self.df['idch'] * np.sqrt(self.eff)
+                                 * self.df['mc']).sum()
+                                - (self.df['ichg'] / np.sqrt(self.eff)
+                                   * self.df['mc']).sum())
+        print('Net value input: {}'.format(tot_net_value_input))
+        print('Net value disagg: {}'.format(tot_net_value_disagg))
+        print('Difference net value: {}'.format(tot_net_value_input
+                                                - tot_net_value_disagg))
+        sys.stdout.flush()
+
+
     def loop_get_hourly_components(self):
 
         irow =  0
