@@ -248,6 +248,110 @@ class StDisaggregator():
                 self.df_step_evts.loc[mask_evt, dr + '_final'] = \
                         self.df_full.loc[smin:smax, comp_col].sum()
 
+
+    def loop_get_hourly_components_dask(self):
+
+        def get_full_range(x):
+
+            smin = x['slot_min']
+            smax = x['slot_max']
+            df_slct = self.df_full.loc[smin:smax]
+
+            return df_slct[['ichg', 'idch']]
+
+        def select_range(row):
+
+            df = self.df_full[['ichg', 'idch']].loc[row.slot_min:row.slot_max]
+            df['iteration'] = row.iteration
+            df['nevent'] = row.nevent
+
+            return df
+
+        # get a map (slot, iteration) --> nevent
+        def expand_slot_ranges(x):
+
+            return pd.DataFrame(np.arange(x.slot_min, x.slot_max + 1))[0]
+
+        # copy nevent column and set column as index
+        self.df_step_evts['nevent_index'] = self.df_step_evts.nevent
+        self.df_step_evts = self.df_step_evts.set_index('nevent_index')
+
+        # get relevant data and init ComponentCalculator
+        def call_compcalc(df, dr, col_nevent):
+
+            nevent = df[col_nevent].iloc[0]
+
+            val_tgt = self.df_step_evts.loc[nevent, 'comp_' + dr]
+
+            # select residual profile
+            y = df[dr]
+            y.loc[y < 0] = 0
+            y.loc[np.abs(y) < 1e-10] = 0
+
+            # get new component
+            self.compcal = ComponentCalculator(y, val_tgt,
+                                               self.kind, dr)
+
+            return pd.Series(self.compcal.ycomp)
+
+
+        self.df_full = self.df_full[[c for c in self.df_full.columns
+                                     if not 'nevent_' in c]]
+
+        list_iter = self.df_step_evts.iteration.unique()
+        for iiter in list_iter:
+
+            col_nevent = 'nevent_%d'%iiter
+
+            df_nevents = (self.df_step_evts.query('iteration == @iiter')
+                                           .apply(expand_slot_ranges, axis=1)
+                                           .stack().reset_index(-1, drop=True)
+                                           .reset_index()
+                                           .rename(columns={0: 'slot'})
+                                           .set_index(['slot'])
+                                           .nevent_index.rename(col_nevent))
+
+            self.df_full = self.df_full.join(df_nevents,
+                                             on=df_nevents.index.names)
+
+            dr = 'idch'
+            for dr in ['idch', 'ichg']:
+
+                tqdm.pandas(desc='{} {}'.format(iiter, dr))
+
+                col_chgdch = dr + '_' + str(int(iiter))
+
+                df_comp_gp = self.df_full.groupby(col_nevent)
+
+                call_compcalc_dr = lambda x: call_compcalc(x, dr, col_nevent)
+                df_comp = df_comp_gp.progress_apply(call_compcalc_dr)
+
+                df_comp = df_comp.reset_index(-1, drop=True)
+
+                if len(df_comp_gp) == 1:
+                    df_comp = df_comp.T
+
+                self.df_full[col_chgdch] = df_comp.values
+                self.df_full[col_chgdch] = self.df_full[col_chgdch].fillna(0)
+
+                self.df_full[dr] -= self.df_full[col_chgdch]
+
+
+        # Target columns df_full:
+        ['slot', 'echg', 'edch', 'erg', 'ichg', 'idch', 'mc', 'sy_orig',
+       'ichg_fix', 'idch_fix', 'slot_min', 'slot_max', 'ichg_all', 'idch_all',
+       'nevent_0', 'idch_0', 'ichg_0', 'nevent_1', 'idch_1', 'ichg_1',
+       'nevent_2', 'idch_2', 'ichg_2', 'nevent_3', 'idch_3', 'ichg_3',
+       'nevent_4', 'idch_4', 'ichg_4', 'nevent_5', 'idch_5', 'ichg_5',
+       'nevent_6', 'idch_6', 'ichg_6']
+
+        # Target columns df_step_evts:
+        ['comp_ichg', 'comp_idch', 'ichg', 'idch', 'iteration', 'min', 'nevent',
+       'res_ichg', 'res_idch', 'slot_max', 'slot_min', 'wgt_center_erg_idch',
+       'val_comp_idch', 'idch_final', 'wgt_center_erg_ichg', 'val_comp_ichg',
+       'ichg_final']
+
+
     def iterate_event_aggregation(self):
         '''
         Iterate block aggregation.
@@ -261,6 +365,7 @@ class StDisaggregator():
         df_step_evts_add = self.df_step_evts.copy()
         iteration = 1
         while len(df_step_evts_add) > 1:
+            print('Iteration %d'%iteration)
 
             df_step_evts_input = df_step_evts_add[['nevent', 'res_ichg',
                                                    'res_idch', 'slot_min',
