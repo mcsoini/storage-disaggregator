@@ -589,3 +589,27 @@ class StDisaggregator():
                        [self.sc_out, itb], [self.sc, 'def_node'])
 
 
+if __name__ == '__main__':
+
+
+    import time
+
+    irun = 0
+    ipp = 256
+
+    df_raw = pd.read_hdf(sc_out, 'var_sy_pwr',
+                         where='run_id == {} and pp_id == {}'.format(irun, ipp))
+
+    df = df_raw.pivot_table(columns='bool_out', values='value', index='sy') * 1e6
+    df = df.rename(columns={True: 'echg', False: 'edch'}).reset_index()
+    df['mc'] = 1
+
+    t = time.time()
+
+    tvd = StDisaggregator(df, 0.9, 'share')
+
+    self = tvd
+
+    self.run()
+
+    print(time.time() - t)
