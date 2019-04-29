@@ -128,6 +128,7 @@ class StDisaggregator():
 
         # step dataframe with 1 row per charging/discharging pair
         # this is iteration zero of the disaggregation
+        print('Aggregate components iteration 0')
         self.df_step_evts = self.aggregate_events(self.df_full, 0)
         self.df_step_evts['iteration'] = 0
 
