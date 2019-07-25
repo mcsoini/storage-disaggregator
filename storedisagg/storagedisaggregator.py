@@ -25,12 +25,12 @@ tqdm.pandas()
 class StDisaggregator():
 
 
-    def __init__(self, df, eff, kind, print_titles=True):
+    def __init__(self, df, eff, kind, print_progress=True):
 
         self.eff = eff
         self.df = df
         self.kind = kind
-        self.print_titles = print_titles
+        self.print_progress = print_progress
 
     def run(self):
 
@@ -424,7 +424,7 @@ class StDisaggregator():
 
                 call_compcalc_dr = lambda x: call_compcalc(x, dr, col_nevent)
 
-                if self.print_titles:
+                if self.print_progress:
                     df_comp = df_comp_gp.progress_apply(call_compcalc_dr)
                 else:
                     df_comp = df_comp_gp.apply(call_compcalc_dr)
