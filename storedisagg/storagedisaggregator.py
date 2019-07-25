@@ -13,20 +13,24 @@ import numpy as np
 
 from storedisagg import ComponentCalculator
 
-try:
-    from tqdm import tqdm
-except:
-    # no fancy progress bars today
-    tqdm = lambda x: x
+from tqdm import tqdm
+
+from storedisagg import _get_logger
+
+logger = _get_logger(__name__)
+
+
+tqdm.pandas()
 
 class StDisaggregator():
 
 
-    def __init__(self, df, eff, kind):
+    def __init__(self, df, eff, kind, print_titles=True):
 
         self.eff = eff
         self.df = df
         self.kind = kind
+        self.print_titles = print_titles
 
     def run(self):
 
@@ -73,7 +77,7 @@ class StDisaggregator():
         else:
             # get hourly components by looping over event rows
             self.loop_get_hourly_components()
-                # calculate final results consisting in time differences and
+            # calculate final results consisting in time differences and
             # component values
             self.calc_final_results()
 
@@ -135,7 +139,7 @@ class StDisaggregator():
 
         # step dataframe with 1 row per charging/discharging pair
         # this is iteration zero of the disaggregation
-        print('Aggregate components iteration 0')
+        logger.debug('Aggregate components iteration 0')
         self.df_step_evts = self.aggregate_events(self.df_full, 0)
         self.df_step_evts['iteration'] = 0
 
@@ -206,9 +210,9 @@ class StDisaggregator():
                                  * self.df['mc']).sum()
                                 - (self.df['ichg'] / np.sqrt(self.eff)
                                    * self.df['mc']).sum())
-        print('Net value input: {}'.format(tot_net_value_input))
-        print('Net value disagg: {}'.format(tot_net_value_disagg))
-        print('Difference net value: {}'.format(tot_net_value_input
+        logger.info('Net value input: {}'.format(tot_net_value_input))
+        logger.info('Net value disagg: {}'.format(tot_net_value_disagg))
+        logger.info('Difference net value: {}'.format(tot_net_value_input
                                                 - tot_net_value_disagg))
         sys.stdout.flush()
 
@@ -273,9 +277,9 @@ class StDisaggregator():
                                  * self.df['mc']).sum()
                                 - (self.df['ichg'] / np.sqrt(self.eff)
                                    * self.df['mc']).sum())
-        print('Net value input: {}'.format(tot_net_value_input))
-        print('Net value disagg: {}'.format(tot_net_value_disagg))
-        print('Difference net value: {}'.format(tot_net_value_input
+        logger.info('Net value input: {}'.format(tot_net_value_input))
+        logger.info('Net value disagg: {}'.format(tot_net_value_disagg))
+        logger.info('Difference net value: {}'.format(tot_net_value_input
                                                 - tot_net_value_disagg))
         sys.stdout.flush()
 
@@ -414,14 +418,17 @@ class StDisaggregator():
             dr = 'idch'
             for dr in ['idch', 'ichg']:
 
-                tqdm.pandas(desc='{} {}'.format(iiter, dr))
-
                 col_chgdch = dr + '_' + str(int(iiter))
 
                 df_comp_gp = self.df_full.groupby(col_nevent)
 
                 call_compcalc_dr = lambda x: call_compcalc(x, dr, col_nevent)
-                df_comp = df_comp_gp.progress_apply(call_compcalc_dr)
+
+                if self.print_titles:
+                    df_comp = df_comp_gp.progress_apply(call_compcalc_dr)
+                else:
+                    df_comp = df_comp_gp.apply(call_compcalc_dr)
+
 
                 df_comp = df_comp.reset_index(-1, drop=True)
 
@@ -462,7 +469,7 @@ class StDisaggregator():
         df_step_evts_add = self.df_step_evts.copy()
         iteration = 1
         while len(df_step_evts_add) > 1:
-            print('Iteration %d'%iteration)
+            logger.info('Iteration %d'%iteration)
 
             df_step_evts_input = df_step_evts_add[['nevent', 'res_ichg',
                                                    'res_idch', 'slot_min',
@@ -483,10 +490,10 @@ class StDisaggregator():
                 self.df_step_evts = pd.concat(list_df, axis=0, sort=True)
 
         # comp_dch and comp_chg must add up to the original chg and dch
-        print('Difference idch (events - total):',
+        logger.info('Difference idch (events - total):',
               (self.df_step_evts['comp_idch'].sum()
                - self.df_full['idch'].sum()))
-        print('Difference ichg (events - total):',
+        logger.info('Difference ichg (events - total):',
               (self.df_step_evts['comp_ichg'].sum()
                - self.df_full['ichg'].sum()))
         sys.stdout.flush()
