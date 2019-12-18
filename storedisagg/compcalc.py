@@ -27,16 +27,16 @@ class ComponentCalculator:
                          'bottom': {'chg': 'bottom', 'dch': 'bottom'},
                          'share': {'chg': 'share', 'dch': 'share'}}
 
-        dict_method = {'leftright': 'leftright',
-                       'rightleft': 'leftright',
-                       'top': 'topbottom',
-                       'bottom': 'topbottom',
-                       'share': 'share'}
+        dict_method = {'leftright': self.get_component_leftright,
+                       'rightleft': self.get_component_leftright,
+                       'top': self.get_component_topbottom,
+                       'bottom': self.get_component_topbottom,
+                       'share': self.get_component_share}
 
         # select method
-        mth_slct = getattr(self, 'get_component_' + dict_method[kind])
+        method_slct = dict_method[kind]
 
-        self.ycomp = mth_slct(y, val_tgt, dict_sub_kind[kind][dr])
+        self.ycomp = method_slct(y, val_tgt, dict_sub_kind[kind][dr])
 
     def get_component_topbottom(self, y, val_tgt, sub_kind):
         ''' Component is cut from the top or from the bottom. '''
