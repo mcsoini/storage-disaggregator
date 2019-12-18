@@ -14,6 +14,10 @@ import numpy as np
 import pandas as pd
 
 class ComponentCalculator:
+    '''
+    Defines methods to extract components with specified total area/energy
+    val_tgt. Final compon
+    '''
 
     def __init__(self, y, val_tgt, kind, dr):
 
@@ -127,7 +131,7 @@ class ComponentCalculator:
         elif sub_kind == 'left':
             slct_index = np.arange(len(yret))
         yret = np.array([yret[yy] for yy in slct_index])
-        
+
         return yret
 
 

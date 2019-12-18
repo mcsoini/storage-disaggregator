@@ -1,10 +1,12 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-Created on Mon Aug 27 20:09:56 2018
+Copyright (C) 2018 contributors listed in AUTHORS.
 
-@author: mcsoini
+storedisagg/__init__.py
+~~~~~
+
+storedisagg library for the analysis of storage charging/discharging time scales.
 """
+
 
 import logging
 

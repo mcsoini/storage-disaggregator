@@ -41,16 +41,13 @@ def get_example_data_100():
     cd_r2, soc_r2 = add_peaks(peaks_right_2)
 
     cd = cd_l + cd_r1 + cd_r2
-    soc = soc_l + soc_r1 + soc_r2
 
     c = cd.copy()
     c[c < 0] = 0
     d = cd.copy()
     d[d > 0] = 0
 
-    mc = np.zeros(len(soc))
-
-    df = pd.DataFrame(np.array([x, c, -d, mc]).T,
-                      columns=['sy', 'echg', 'edch', 'mc'])
+    df = pd.DataFrame(np.array([x, c, -d]).T,
+                      columns=['t', 'chg', 'dch'])
 
     return df
