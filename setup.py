@@ -6,7 +6,7 @@ with open("description_pypi.rst", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="storedisagg_test",
+    name="storedisagg",
     version="1.0.1",
     author="storedisagg contributors listed in AUTHORS",
     author_email="m.c.soini@posteo.de",
